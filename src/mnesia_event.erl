@@ -51,8 +51,18 @@ handle_call(_Request, _From, State) ->
 handle_cast(_Msg, State) ->
     {noreply, State}.
 
+
+handle_info({mnesia_table_event, {write, Table, Record, [], _ActivityInfo}}, {Mod, Tables, CBState})->
+	{ok, State} = apply(Mod, create, [Record, CBState]),
+	{noreply, State};
+handle_info({mnesia_table_event, {write, Table, NewRecord, OldRecords, _ActivityInfo}}, {Mod, Tables, CBState})->
+	{ok, State} = apply(Mod, update, [Record, OldRecords, CBState]),
+	{noreply, State};
+handle_info({mnesia_table_event, {delete, Table, Pattern, OldRecords, _ActivityInfo}}, {Mod, Tables, CBState})->
+	{ok, State} = apply(Mod, delete, [Pattern, OldRecords, CBState]),
+	{noreply, State};
 handle_info(_Info, State) ->
-    {noreply, State}.
+	{noreply, State}.
 
 terminate(_Reason, _State) ->
     ok.
