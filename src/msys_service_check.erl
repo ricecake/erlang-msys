@@ -5,7 +5,8 @@
   host_id,
   service_id,
   status,
-  status_start
+  status_start,
+  options
 ]).
 
 -join([
