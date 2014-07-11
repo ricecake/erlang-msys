@@ -24,7 +24,7 @@ behaviour_info(callbacks) ->
                 {create, 2}, % create(NewRecord, State)
                 {update, 3}, % update(NewRecord, OldRecords, State)
                 {delete, 3}, % delete(Pattern,   OldRecords, State)
-                {info, 3},   % info(Type, Item, Details)
+                {info, 3},   % info(Type, Item, State)
 	];
 behaviour_info(_Other) -> undefined.
 
@@ -43,6 +43,7 @@ start_link(Module, Tables, Options) ->
 
 init({Mod, Tables}) ->
         [{ok, _} = mnesia:subscribe({table, Table, detailed}) || Table <- Tables],
+        {ok, _} = mnesia:subscribe(system),
         {ok, State} = apply(Module, init, [Tables]), 
         {ok, {Mod, Tables, State}}.
 
@@ -62,6 +63,23 @@ handle_info({mnesia_table_event, {write, Table, NewRecord, OldRecords, _Activity
 handle_info({mnesia_table_event, {delete, Table, Pattern, OldRecords, _ActivityInfo}}, {Mod, Tables, CBState})->
 	{ok, State} = apply(Mod, delete, [Pattern, OldRecords, CBState]),
 	{noreply, State};
+handle_info({mnesia_system_event, Event}, {Mod, Tables, CBState}) ->
+	{ok, State} = case Event of
+		{mnesia_up, Node} ->
+			apply(Mod, info, [node_up, Node, CBState]);
+		{mnesia_down, Node} ->
+			apply(Mod, info, [node_down, Node, CBState]);
+		{mnesia_overload, Details} ->
+			apply(Mod, info, [overload, Details, CBState]);
+		{inconsistent_database, Context, Node} ->
+			apply(Mod, info, [conflict, {Context, Node}, CBState]);
+		{mnesia_fatal, Format, Args, BinaryCore} ->
+			apply(Mod, info, [fatal, {Format, Args, BinaryCore}, CBState]);
+		{mnesia_user, Event} ->
+			apply(Mod, info, [user, Event, CBState]);
+		_ -> CBState
+	end,
+	{noreply, {Mod, Tables, State}};
 handle_info(_Info, State) ->
 	{noreply, State}.
 
