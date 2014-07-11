@@ -56,13 +56,13 @@ handle_cast(_Msg, State) ->
 
 handle_info({mnesia_table_event, {write, Table, Record, [], _ActivityInfo}}, {Mod, Tables, CBState})->
 	{ok, State} = apply(Mod, create, [Record, CBState]),
-	{noreply, State};
+	{noreply, {Mod, Tables, State}};
 handle_info({mnesia_table_event, {write, Table, NewRecord, OldRecords, _ActivityInfo}}, {Mod, Tables, CBState})->
 	{ok, State} = apply(Mod, update, [Record, OldRecords, CBState]),
-	{noreply, State};
+	{noreply, {Mod, Tables, State}};
 handle_info({mnesia_table_event, {delete, Table, Pattern, OldRecords, _ActivityInfo}}, {Mod, Tables, CBState})->
 	{ok, State} = apply(Mod, delete, [Pattern, OldRecords, CBState]),
-	{noreply, State};
+	{noreply, {Mod, Tables, State}};
 handle_info({mnesia_system_event, Event}, {Mod, Tables, CBState}) ->
 	{ok, State} = case Event of
 		{mnesia_up, Node} ->
