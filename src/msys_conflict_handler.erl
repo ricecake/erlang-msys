@@ -1,1 +1,1 @@
--module(msys_conflict_reasolver).
+-module(msys_conflict_handler).
