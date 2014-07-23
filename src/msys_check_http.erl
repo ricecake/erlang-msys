@@ -6,5 +6,7 @@
 init(_Args) -> ok.
 
 check(HostInfo, CheckInfo) ->
-  {ok,{{_, Code, Status}, _, _}} = httpc:request(head, {"http://google.com", []}, [], []).
+  case httpc:request(head, {"http://google.com", []}, [], []) of
+    {ok,{{_, Code, Status}, _, _}} -> {ok, {up, [Code, Status]}}
+  end.
 % need to hable casr where we cant even connect...
