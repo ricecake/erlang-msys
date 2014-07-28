@@ -1,5 +1,7 @@
 -module(msys_service_check).
 
+-init([start_link/1, init/1]).
+
 -fields([
   id,
   host_id,
