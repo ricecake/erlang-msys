@@ -4,6 +4,7 @@
 
 -fields([
   id,
+  node,
   name,
   status,
   status_start
