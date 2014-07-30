@@ -7,6 +7,6 @@
 behaviour_info(callbacks) -> 
         [
                 {init, 1}, %called at application start to prep report action
-                {check, 3}
+                {check, 2}
         ];
 behaviour_info(_Other) -> undefined.
