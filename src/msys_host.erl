@@ -2,10 +2,10 @@
 
 -init([start_link/1, init/1]).
 
--fields([
+-record(host, {
   id,
   node,
   name,
   status,
   status_start
-]).
+}).
