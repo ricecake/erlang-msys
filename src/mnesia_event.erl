@@ -24,7 +24,7 @@ behaviour_info(callbacks) ->
                 {create, 2}, % create(NewRecord, State)
                 {update, 3}, % update(NewRecord, OldRecords, State)
                 {delete, 3}, % delete(Pattern,   OldRecords, State)
-                {info, 3},   % info(Type, Item, State)
+                {info, 3}    % info(Type, Item, State)
 	];
 behaviour_info(_Other) -> undefined.
 
@@ -44,7 +44,7 @@ start_link(Module, Tables, Options) ->
 init({Mod, Tables}) ->
         [{ok, _} = mnesia:subscribe({table, Table, detailed}) || Table <- Tables],
         {ok, _} = mnesia:subscribe(system),
-        {ok, State} = apply(Module, init, [Tables]), 
+        {ok, State} = apply(Mod, init, [Tables]),
         {ok, {Mod, Tables, State}}.
 
 handle_call(_Request, _From, State) ->
@@ -58,7 +58,7 @@ handle_info({mnesia_table_event, {write, Table, Record, [], _ActivityInfo}}, {Mo
 	{ok, State} = apply(Mod, create, [Record, CBState]),
 	{noreply, {Mod, Tables, State}};
 handle_info({mnesia_table_event, {write, Table, NewRecord, OldRecords, _ActivityInfo}}, {Mod, Tables, CBState})->
-	{ok, State} = apply(Mod, update, [Record, OldRecords, CBState]),
+	{ok, State} = apply(Mod, update, [NewRecord, OldRecords, CBState]),
 	{noreply, {Mod, Tables, State}};
 handle_info({mnesia_table_event, {delete, Table, Pattern, OldRecords, _ActivityInfo}}, {Mod, Tables, CBState})->
 	{ok, State} = apply(Mod, delete, [Pattern, OldRecords, CBState]),
@@ -92,4 +92,3 @@ code_change(_OldVsn, State, _Extra) ->
 %% ------------------------------------------------------------------
 %% Internal Function Definitions
 %% ------------------------------------------------------------------
-

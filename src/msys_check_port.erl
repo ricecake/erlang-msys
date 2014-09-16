@@ -1,7 +1,7 @@
 -module(msys_check_port).
 -behavior(msys_check).
 
--export([init/1, check/2]).
+-export([init/1, check/2, ping/2]).
 
 init(_Args) -> ok.
 
