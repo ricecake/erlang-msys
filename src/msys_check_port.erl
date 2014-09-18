@@ -5,7 +5,14 @@
 
 init(_Args) -> ok.
 
-check(HostInfo, CheckInfo) -> {ok, {up, []}}.
+check(HostInfo, CheckInfo) ->
+	Host = proplists:get_value(hostname, HostInfo),
+	Port = proplists:get_value(port, CheckInfo),
+	case ping(Host, Port) of
+		{Port, open}   -> {ok, {up, []}};
+		{Port, closed} -> {ok, {down, []}};
+		Error          -> {ok, {error, [Error]}}
+	end.
 
 
 ping(Host, Port) ->
