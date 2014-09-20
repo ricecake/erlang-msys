@@ -11,7 +11,7 @@ check(HostInfo, CheckInfo) ->
 	case ping(Host, Port) of
 		{Port, open}   -> {ok, {up, []}};
 		{Port, closed} -> {ok, {down, []}};
-		Error          -> {ok, {error, [Error]}}
+		Error          -> {ok, {down, [{error, Error}]}}
 	end.
 
 
