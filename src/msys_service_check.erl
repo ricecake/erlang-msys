@@ -6,9 +6,9 @@
   id,
   host_id,
   service_id,
-  status,
-  status_start,
-  options
+  status={undefined, []},
+  status_start=undefined,
+  options={[], []}
 }).
 
 -join([
