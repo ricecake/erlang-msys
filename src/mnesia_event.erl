@@ -47,12 +47,8 @@ init({Mod, Tables}) ->
         {ok, State} = apply(Mod, init, [Tables]),
         {ok, {Mod, Tables, State}}.
 
-handle_call(_Request, _From, State) ->
-    {reply, ok, State}.
-
-handle_cast(_Msg, State) ->
-    {noreply, State}.
-
+handle_call(_Request, _From, State) -> {reply, ok, State}.
+handle_cast(_Msg, State) -> {noreply, State}.
 
 handle_info({mnesia_table_event, {write, Table, Record, [], _ActivityInfo}}, {Mod, Tables, CBState})->
 	{ok, State} = apply(Mod, create, [Record, CBState]),
