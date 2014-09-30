@@ -47,8 +47,8 @@ init({Mod, Tables}) ->
         {ok, State} = apply(Mod, init, [Tables]),
         {ok, {Mod, Tables, State}}.
 
-handle_call(_Request, _From, State) -> {reply, ok, State}.
-handle_cast(_Msg, State) -> {noreply, State}.
+handle_call(Request, From, {Mod, _Tables, CBState}) -> apply(Mod, handle_call, [Request, From, CBState]).
+handle_cast(Msg, {Mod, _Tables, CBState}) -> apply(Mod, handle_cast, [Msg, CBState]).
 
 handle_info({mnesia_table_event, {write, Table, Record, [], _ActivityInfo}}, {Mod, Tables, CBState})->
 	{ok, State} = apply(Mod, create, [Record, CBState]),
@@ -76,11 +76,10 @@ handle_info({mnesia_system_event, Event}, {Mod, Tables, CBState}) ->
 		_ -> CBState
 	end,
 	{noreply, {Mod, Tables, State}};
-handle_info(_Info, State) ->
-	{noreply, State}.
+handle_info(Info, {Mod, _Tables, CBState}) -> apply(Mod, handle_info, [Info, CBState]).
 
-terminate(_Reason, _State) -> ok.
-code_change(_OldVsn, State, _Extra) -> {ok, State}.
+terminate(Reason, {Mod, _Tables, CBState}) -> apply(Mod, terminate, [Reason, CBState]).
+code_change(OldVsn, {Mod, _Tables, CBState}, Extra) -> apply(Mod, code_change, [OldVsn, CBState, CBState]).
 
 %% ------------------------------------------------------------------
 %% Internal Function Definitions
