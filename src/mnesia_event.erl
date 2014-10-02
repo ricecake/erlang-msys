@@ -24,7 +24,13 @@ behaviour_info(callbacks) ->
                 {create, 2}, % create(NewRecord, State)
                 {update, 3}, % update(NewRecord, OldRecords, State)
                 {delete, 3}, % delete(Pattern,   OldRecords, State)
-                {info, 3}    % info(Type, Item, State)
+                {info, 3},   % info(Type, Item, State)
+		{init, 1},
+		{handle_call, 3},
+		{handle_cast, 2},
+		{handle_info, 2},
+		{terminate,   2},
+		{code_change, 3}
 	];
 behaviour_info(_Other) -> undefined.
 
