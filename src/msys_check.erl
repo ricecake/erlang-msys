@@ -2,7 +2,7 @@
 
 -export([behaviour_info/1]).
 
--export([run/3]).
+-export([run/2]).
 
 %% ------------------------------------------------------------------
 %% Behaviour Definition
