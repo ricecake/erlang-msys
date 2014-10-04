@@ -13,9 +13,9 @@ start(_StartType, _StartArgs) ->
 	% Ensure That We start the supervisor before initing the tools,
 	% So that it will be available to the various pieces.
 	{ok, Pid} = msys_sup:start_link(),
-	[ ok = msys_check:init(Check) || Check <- checks() ],
-	[ ok = msys_action:init(Action) || Action <- actions() ],
-	[ ok = System:init() || System <- systems() ],
+	[ ok = msys_check:init(Check, options(Check)) || Check <- checks() ],
+	[ ok = msys_action:init(Action, options(Action)) || Action <- actions() ],
+	[ ok = System:init(options(System)) || System <- systems() ],
 	{ok, Pid}.
 
 stop(_State) ->
@@ -37,3 +37,5 @@ actions() -> [
 checks() -> [
 	msys_check_port
 ].
+
+options(_)->[].
