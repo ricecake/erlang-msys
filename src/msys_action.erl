@@ -1,4 +1,4 @@
--module(msys_check_action).
+-module(msys_action).
 
 %% ------------------------------------------------------------------
 %% Behaviour Definition
