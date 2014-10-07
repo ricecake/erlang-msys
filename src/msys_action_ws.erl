@@ -1,6 +1,6 @@
 -module(msys_action_ws).
 
-%-export([init/1, report/3]).
+-export([init/1, report/3]).
 
 init(_Opts) ->
     Dispatch = cowboy_router:compile([
