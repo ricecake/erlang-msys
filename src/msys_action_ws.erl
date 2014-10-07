@@ -13,3 +13,4 @@ init(_Opts) ->
         				[{env, [{dispatch, Dispatch}]}]),
 	{ok, Pid}.
 
+report(_Status, _Checkinfo, _Hostinfo) -> ok.
