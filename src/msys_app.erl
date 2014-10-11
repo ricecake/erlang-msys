@@ -15,7 +15,7 @@ start(_StartType, _StartArgs) ->
 	{ok, Pid} = msys_sup:start_link(),
 	[ ok = msys_check:init(Check, options(Check)) || Check <- checks() ],
 	[ ok = msys_action:init(Action, options(Action)) || Action <- actions() ],
-	[ ok = msys_system:init(System, options(System)) || System <- systems() ],
+	[ ok = msys_system:setup(System, options(System)) || System <- systems() ],
 	{ok, Pid}.
 
 stop(_State) ->
