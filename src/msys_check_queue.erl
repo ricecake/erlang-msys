@@ -3,7 +3,6 @@
 -behaviour(gen_server).
 
 -define(SERVER, ?MODULE).
--export([setup/1]).
 
 -record(chkq, {
 	runtime,
@@ -14,7 +13,7 @@
 %% API Function Exports
 %% ------------------------------------------------------------------
 
--export([start_link/0]).
+-export([start_link/0, setup/1, scheduleCheck/2, checkQueue/0]).
 
 %% ------------------------------------------------------------------
 %% gen_server Function Exports
@@ -29,6 +28,12 @@
 
 start_link() ->
     gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
+
+setup(_opts) -> ok.
+
+checkQueue() -> {ok, []}.
+
+scheduleCheck(Interval, CheckID) -> ok.
 
 %% ------------------------------------------------------------------
 %% gen_server Function Definitions
@@ -56,10 +61,6 @@ code_change(_OldVsn, State, _Extra) ->
 %% Internal Function Definitions
 %% ------------------------------------------------------------------
 
-checkQueue() -> {ok, []}.
+popQueue() -> {ok, []}.
 
 scheduleNextRun() -> ok.
-
-scheduleCheck(Interval, CheckID) -> ok.
-
-

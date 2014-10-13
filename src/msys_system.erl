@@ -1,6 +1,6 @@
 -module(msys_system).
 
--export([init/2])
+-export([setup/2]).
 
 %% ------------------------------------------------------------------
 %% Behaviour Definition
