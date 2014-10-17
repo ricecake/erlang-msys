@@ -33,7 +33,7 @@ setup(_opts) -> ok.
 
 checkQueue() -> {ok, []}.
 
-scheduleCheck(Interval, CheckID) -> ok.
+scheduleCheck(Interval, CheckID) -> gen_server:call(?SERVER, {queue, {Interval, CheckID}})..
 
 %% ------------------------------------------------------------------
 %% gen_server Function Definitions
