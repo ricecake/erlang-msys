@@ -67,3 +67,5 @@ scheduleNextRun() -> ok.
 
 timestamp() -> {Mega, Secs, _Micro} = erlang:now(),  Mega*1000*1000 +Secs.
 
+nextRun(Interval) -> timestamp()+Interval.
+
