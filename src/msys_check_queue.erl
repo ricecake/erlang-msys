@@ -13,7 +13,7 @@
 %% API Function Exports
 %% ------------------------------------------------------------------
 
--export([start_link/0, setup/1, scheduleCheck/2, checkQueue/0]).
+-export([start_link/0, setup/1, tables/0, scheduleCheck/2, checkQueue/0]).
 
 %% ------------------------------------------------------------------
 %% gen_server Function Exports
@@ -30,6 +30,8 @@ start_link() ->
     gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
 setup(_opts) -> ok.
+
+tables() -> [].
 
 checkQueue() -> {ok, []}.
 

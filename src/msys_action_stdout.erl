@@ -1,6 +1,6 @@
 -module(msys_action_stdout).
 
--behavior(msys_check_action).
+-behavior(msys_action).
 
 -export([init/1, report/3]).
 
